@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee Time ☕</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <script defer src="scripts/script.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <header id="navbar">
+    <div class="logo">CoffeeTime</div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="cart-icon" id="cartButton" aria-label="Open cart" title="Open cart">
+      🛒 <span id="cart-count">0</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-content">
+      <h1>Wake Up & Smell The Coffee</h1>
+      <p>Start your day with the perfect cup brewed just for you.</p>
+      <a href="#menu" class="btn">Explore Menu</a>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <div class="menu-container">
+
+      <div class="menu-item" onclick="openDetail('Espresso')"
+           data-name="Espresso"
+           data-price="25000"
+           data-rating="4.5"
+           data-desc="Rich and intense coffee shot with deep, bold flavor."
+           data-img="img/espreso.png">
+        <img src="assets/image/espreso.png" alt="Espresso">
+        <h3>Espresso</h3>
+        <p>Rich and intense coffee shot with deep, bold flavor.</p>
+        <button class="order-btn btn" onclick="event.stopPropagation(); openOrder('Espresso', 25000, 'img/espreso.png')">Order</button>
+      </div>
+
+      <div class="menu-item" onclick="openDetail('Latte')"
+           data-name="Latte"
+           data-price="28000"
+           data-rating="4.7"
+           data-desc="Silky blend of espresso and steamed milk with light foam on top."
+           data-img="img/latte.png">
+        <img src="assets/image/latte.png" alt="Latte">
+        <h3>Latte</h3>
+        <p>Silky blend of espresso and steamed milk with light foam on top.</p>
+        <button class="order-btn btn" onclick="event.stopPropagation(); openOrder('Latte', 28000, 'img/latte.png')">Order</button>
+      </div>
+
+      <div class="menu-item" onclick="openDetail('Americano')"
+           data-name="Americano"
+           data-price="27000"
+           data-rating="4.3"
+           data-desc="Classic espresso diluted with hot water for a smooth, mellow taste."
+           data-img="img/americano.png">
+        <img src="assets/image/americano.png" alt="Americano">
+        <h3>Americano</h3>
+        <p>Classic espresso diluted with hot water for a smooth, mellow taste.</p>
+        <button class="order-btn btn" onclick="event.stopPropagation(); openOrder('Americano', 27000, 'img/americano.png')">Order</button>
+      </div>
+
+      <div class="menu-item" onclick="openDetail('Cappuccino')"
+           data-name="Cappuccino"
+           data-price="30000"
+           data-rating="4.6"
+           data-desc="Perfect harmony of espresso, steamed milk, and fluffy milk foam."
+           data-img="img/cappucino.png">
+        <img src="assets/image/cappucino.png" alt="Cappuccino">
+        <h3>Cappuccino</h3>
+        <p>Perfect harmony of espresso, steamed milk, and fluffy milk foam.</p>
+        <button class="order-btn btn" onclick="event.stopPropagation(); openOrder('Cappuccino', 30000, 'img/cappucino.png')">Order</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- About -->
+  <section id="about">
+    <div class="about-img">
+      <img src="assets/image/logo.png" alt="Coffee Shop" />
+    </div>
+    <div class="about-text">
+      <h2>About Us</h2>
+      <p>We are passionate coffee lovers crafting the finest blends. Every bean tells a story, and every cup brings warmth and comfort.</p>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial-slider">
+      <div class="testimonial active">
+        <p>“The best latte I’ve ever had! Cozy place and friendly staff.”</p>
+        <h4>– Sarah M.</h4>
+      </div>
+      <div class="testimonial">
+        <p>“Great coffee and amazing atmosphere. Perfect for study or chill.”</p>
+        <h4>– Daniel K.</h4>
+      </div>
+      <div class="testimonial">
+        <p>“Love the aroma and the vibe here. Highly recommended!”</p>
+        <h4>– Amanda R.</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <form id="contact-form">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CoffeeTime. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Order Modal -->
+  <div id="orderModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <span class="close-btn" id="orderClose">&times;</span>
+      <h3 id="modal-title">Order</h3>
+      <p id="modal-desc" class="muted"></p>
+      <div id="modal-rating" class="rating-stars"></div>
+      <p id="modal-price" class="muted" style="margin-top:8px;"></p>
+
+      <div class="qty-control">
+        <button id="qty-decrease" class="qty-btn">−</button>
+        <input type="number" id="quantity" min="1" value="1" />
+        <button id="qty-increase" class="qty-btn">+</button>
+      </div>
+
+      <div class="modal-actions">
+        <button id="confirmOrder" class="btn">Confirm</button>
+        <button id="cancelOrder" class="btn secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal" aria-hidden="true">
+    <div class="modal-content cart-content">
+      <span class="close-btn" id="cartClose">&times;</span>
+      <h3>Your Cart</h3>
+      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-summary">
+        <div class="cart-total">
+          <span>Total:</span>
+          <strong id="cart-total-price">Rp0</strong>
+        </div>
+        <div class="cart-actions">
+          <button id="clearCart" class="btn secondary">Clear Cart</button>
+          <button id="checkoutBtn" class="btn">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

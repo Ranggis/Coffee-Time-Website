@@ -1,26 +1,16 @@
-<?php
-session_start();
-// Cek keamanan: User harus login
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | Coffee Time ☕</title>
-  <!-- Pastikan path css benar, sesuaikan jika ada di folder styles/ -->
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
       background-color: #faf3e0;
       font-family: 'Poppins', sans-serif;
       color: #333;
-      padding-top: 50px;
+      padding-top: 100px;
     }
     .checkout-container {
       max-width: 900px;
@@ -110,7 +100,10 @@ if (!isset($_SESSION['user_id'])) {
       transition: all 0.4s ease;
       z-index: 9999;
     }
-    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
     .toast.error { background: #e74c3c; }
 
     /* QRIS Modal */
@@ -133,8 +126,14 @@ if (!isset($_SESSION['user_id'])) {
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       animation: fadeIn 0.3s ease;
     }
-    .modal-content img { width: 220px; margin: 20px auto; }
-    .modal-content h3 { color: #8B4513; margin-bottom: 10px; }
+    .modal-content img {
+      width: 220px;
+      margin: 20px auto;
+    }
+    .modal-content h3 {
+      color: #8B4513;
+      margin-bottom: 10px;
+    }
     .modal-content p { color: #444; font-size: 0.95rem; }
 
     @keyframes fadeIn {
@@ -184,8 +183,7 @@ if (!isset($_SESSION['user_id'])) {
       </select>
 
       <button type="submit">Confirm & Pay</button>
-      <!-- Pastikan link ini mengarah ke dashboard user kamu -->
-      <a href="DashboardUser.php" class="back-btn">← Back to Menu</a>
+      <a href="index.html" class="back-btn">← Back to Menu</a>
     </form>
   </div>
 
@@ -202,14 +200,12 @@ if (!isset($_SESSION['user_id'])) {
   </div>
 
   <script>
-    // 1. Load checkout data from LocalStorage
-    // Data ini diambil dari halaman sebelumnya (Menu/Cart)
+    // Load checkout data
     const checkoutData = JSON.parse(localStorage.getItem("checkout_data")) || {};
     const tbody = document.querySelector("#summary-table tbody");
     const totalEl = document.getElementById("total-price");
     let total = 0;
 
-    // Render Table
     Object.keys(checkoutData).forEach((name) => {
       const item = checkoutData[name];
       const subtotal = item.price * item.qty;
@@ -225,7 +221,7 @@ if (!isset($_SESSION['user_id'])) {
     });
     totalEl.textContent = "Rp" + total.toLocaleString();
 
-    // Toast Notification Function
+    // Toast
     function showToast(message, type = "success") {
       const toast = document.getElementById("toast");
       toast.textContent = message;
@@ -234,70 +230,16 @@ if (!isset($_SESSION['user_id'])) {
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-  // --- Di dalam file checkout.php ---
-
-function saveOrderToDatabase(paymentMethod) {
-    // 1. AMBIL VALUE FULL NAME DARI FORM
-    const fullNameInput = document.getElementById("fullname").value;
-    
-    // Validasi sederhana (jika kosong, pakai "Guest")
-    const customerName = fullNameInput.trim() !== "" ? fullNameInput : "Guest";
-
-    let itemsArray = [];
-    Object.keys(checkoutData).forEach((key) => {
-        itemsArray.push({
-            name: key,
-            price: checkoutData[key].price,
-            qty: checkoutData[key].qty
-        });
-    });
-
-    fetch('save_order.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            payment_method: paymentMethod,
-            customer_name: customerName, // <--- 2. KIRIM DATA INI
-            items: itemsArray
-        })
-    })
-    // ... sisa kodingan sama ...
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Jika sukses disimpan di database:
-                if (paymentMethod !== 'QRIS') {
-                   // Jika bukan QRIS, tampilkan toast sukses (QRIS punya toast sendiri di bawah)
-                   showToast(`✅ Payment confirmed via ${paymentMethod}!`);
-                }
-                
-                // Bersihkan Keranjang
-                localStorage.removeItem("coffee_cart");
-                localStorage.removeItem("checkout_data");
-                
-                // Redirect setelah 2.5 detik
-                setTimeout(() => {
-                    window.location.href = "DashboardUser.php";
-                }, 2500);
-            } else {
-                showToast("❌ Error: " + data.message, "error");
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            showToast("❌ Terjadi kesalahan sistem.", "error");
-        });
-    }
-
-    // 3. Logika QRIS
+    // QRIS Modal
     const qrisModal = document.getElementById("qrisModal");
     function openQris() {
       qrisModal.style.display = "flex";
 
-      // Reset teks status
+      // Hapus teks lama kalau ada
       const oldText = document.getElementById("wait-text");
       if (oldText) oldText.remove();
 
+      // Simulasi menunggu pembayaran
       const modal = qrisModal.querySelector(".modal-content");
       const text = document.createElement("p");
       text.id = "wait-text";
@@ -307,23 +249,21 @@ function saveOrderToDatabase(paymentMethod) {
       text.textContent = "⏳ Menunggu pembayaran dari aplikasi Anda...";
       modal.appendChild(text);
 
-      // Simulasi delay 6 detik (Pura-pura user lagi scan)
+      // Setelah 6 detik, simulasi pembayaran berhasil
       setTimeout(() => {
         text.textContent = "✅ Pembayaran diterima!";
         text.style.color = "green";
         showToast("✅ Payment successful via QRIS!");
-
-        // SETELAH BAYAR SUKSES, BARU SIMPAN KE DB
-        saveOrderToDatabase('QRIS');
-        
-        // Tutup modal visual
+        localStorage.removeItem("coffee_cart");
+        localStorage.removeItem("checkout_data");
         setTimeout(() => {
           qrisModal.style.display = "none";
-        }, 2000);
+          window.location.href = "index.html";
+        }, 2500);
       }, 6000);
     }
 
-    // 4. Form Submit Handler
+    // Form Validation
     const form = document.getElementById("checkout-form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -333,19 +273,14 @@ function saveOrderToDatabase(paymentMethod) {
         return;
       }
 
-      // Pastikan ada barang
-      if (Object.keys(checkoutData).length === 0) {
-          showToast("⚠️ Keranjang kosong!", "error");
-          return;
-      }
-
       const method = document.getElementById("method").value;
-      
       if (method === "QRIS") {
-        openQris(); // Jalankan simulasi QRIS dulu, baru save di dalamnya
+        openQris();
       } else {
-        // Metode lain (Cash/Transfer) langsung simpan
-        saveOrderToDatabase(method);
+        showToast(`✅ Payment confirmed via ${method}!`);
+        localStorage.removeItem("coffee_cart");
+        localStorage.removeItem("checkout_data");
+        setTimeout(() => (window.location.href = "index.html"), 2500);
       }
     });
   </script>

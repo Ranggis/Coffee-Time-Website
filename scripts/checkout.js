@@ -47,6 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show success message
     alert(`✅ Payment successful!\nThank you, ${name}! Your order will be processed via ${method.toUpperCase()}.`);
-    window.location.href = "DashboardUser.php";
+    window.location.href = "index.html";
   });
 });

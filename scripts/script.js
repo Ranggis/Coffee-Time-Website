@@ -193,14 +193,14 @@ clearCartBtn.onclick = () => {
   }
 };
 
-// 🟢 UPDATE: Langsung ke halaman checkout
+// 🟢 UPDATE: Langsung ke halaman checkout.html
 checkoutBtn.onclick = () => {
   if (Object.keys(cart).length === 0) {
     alert("Cart is empty!");
     return;
   }
   localStorage.setItem("checkout_data", JSON.stringify(cart));
-  window.location.href = "checkout.php";
+  window.location.href = "checkout.html";
 };
 
 // ======== Modal Helper ========

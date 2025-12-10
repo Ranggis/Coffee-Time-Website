@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin</title>
+
+  <!-- Style utama -->
+  <link rel="stylesheet" href="styles/dashboard.css" />
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" id="sidebar">
+    <h2>Coffee Time</h2>
+    <nav>
+      <a href="index.html" class="active">Dashboard</a>
+      <a href="produk.html">Produk</a>
+      <a href="transaksi.html">Transaksi</a>
+      <a href="analisis.html">Analisis</a>
+      <a href="pelanggan.html">Pelanggan</a>
+      <a href="index.html">Logout</a>
+    </nav>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <div class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <h1>Dashboard Admin</h1>
+      <span>Halo, Admin 👋</span>
+    </header>
+
+    <main>
+      <!-- Statistik Ringkas -->
+      <section class="stats-overview">
+        <div class="card stat">
+          <h3>Total Produk</h3>
+          <p>42</p>
+        </div>
+        <div class="card stat">
+          <h3>Total Transaksi</h3>
+          <p>128</p>
+        </div>
+        <div class="card stat">
+          <h3>Total Pelanggan</h3>
+          <p>350</p>
+        </div>
+        <div class="card stat">
+          <h3>Rating Rata-rata</h3>
+          <p>4.8 ⭐</p>
+        </div>
+      </section>
+
+      <!-- Grafik Penjualan -->
+      <section class="chart-section card">
+        <div class="section-header">
+          <h3>Grafik Penjualan Minggu Ini</h3>
+          <span class="subtitle">Performa penjualan per hari</span>
+        </div>
+        <canvas id="salesChart"></canvas>
+      </section>
+
+      <!-- Analisis Sentimen -->
+      <section class="sentiment-section card">
+        <div class="section-header">
+          <h3>Analisis Sentimen Pelanggan</h3>
+          <span class="subtitle">Berdasarkan ulasan & rating</span>
+        </div>
+        <div class="sentiment-stats">
+          <p>👍 Positif: <strong>75%</strong></p>
+          <p>😐 Netral: <strong>20%</strong></p>
+          <p>👎 Negatif: <strong>5%</strong></p>
+        </div>
+        <div class="bar">
+          <div class="pos"></div>
+          <div class="neu"></div>
+          <div class="neg"></div>
+        </div>
+      </section>
+
+      <!-- Rekomendasi Produk -->
+      <section class="card recommendations">
+        <div class="section-header">
+          <h3>Rekomendasi Produk Populer</h3>
+          <span class="subtitle">Berdasarkan pembelian & rating</span>
+        </div>
+        <ul>
+          <li>1. Caramel Latte</li>
+          <li>2. Cappuccino</li>
+          <li>3. Vanilla Cold Brew</li>
+        </ul>
+      </section>
+
+      <!-- Pesanan Terbaru -->
+      <section class="card orders">
+        <div class="section-header">
+          <h3>Pesanan Terbaru</h3>
+          <span class="subtitle">Status pemesanan pelanggan</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Pelanggan</th>
+              <th>Produk</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#101</td>
+              <td>Rizky</td>
+              <td>Espresso</td>
+              <td><span class="status done">Selesai</span></td>
+            </tr>
+            <tr>
+              <td>#102</td>
+              <td>Nisa</td>
+              <td>Latte</td>
+              <td><span class="status pending">Diproses</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== Overlay untuk Mobile ===== -->
+  <div id="overlay" class="overlay"></div>
+
+  <!-- ===== Scripts ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="scripts/dashboard.js"></script>
+</body>
+</html>

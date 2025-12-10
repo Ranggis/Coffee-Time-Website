@@ -1,0 +1,471 @@
+/* ====== Reset & Base ====== */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f7e1bc;
+  color: #221518;
+  height: 100%;
+  min-height: 100vh;
+
+  /* 🚫 Hilangkan efek tarik putih di ujung scroll */
+  overscroll-behavior: none;
+
+  /* 🔒 Biar gak bisa geser horizontal */
+  overflow-x: hidden;
+
+  /* 🌫️ Scroll halus */
+  scroll-behavior: smooth;
+}
+
+/* ====== Konten Utama ====== */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-y: auto;
+
+  /* 🚫 Hindari efek tarik di dalam konten */
+  overscroll-behavior: contain;
+}
+
+
+/* ====== Sidebar ====== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background-color: #4b2e23; /* warna kopi tua */
+  color: #f5e1b8; /* warna latte lembut */
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 3px 0 12px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.sidebar h2 {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: #fcefdc;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* biar teks & ikon rata tengah horizontal */
+  gap: 8px;
+  width: 100%; /* penting supaya centering berfungsi penuh */
+  text-align: center; /* jaga-jaga untuk fallback */
+}
+
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+}
+
+.sidebar nav a {
+  display: block;
+  text-decoration: none;
+  color: #f5e1b8;
+  font-weight: 500;
+  font-size: 1.05em;
+  padding: 10px 14px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* buat sidebar bisa disembunyiin */
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+/* tombol menu (buat HP/tablet) */
+.menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #4b2e23;
+  color: #fcefdc;
+  border: none;
+  font-size: 1.4em;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1100;
+  transition: background-color 0.3s ease;
+}
+
+.menu-toggle:hover {
+  background-color: #6b3b2a;
+}
+
+/* layout utama biar ga ketutup sidebar */
+.main-content {
+  margin-left: 240px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* saat sidebar disembunyikan */
+.sidebar.hidden ~ .main-content {
+  margin-left: 0;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+
+/* Tombol Tutup Sidebar */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: #fcefdc;
+  cursor: pointer;
+  display: none;
+  transition: 0.2s ease;
+  z-index: 1100;
+}
+
+.close-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+@media (max-width: 992px) {
+  .close-btn {
+    display: block;
+  }
+}
+
+/* ===== Overlay (background gelap + blur) ===== */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  z-index: 900;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Pastikan sidebar muncul di atas overlay */
+.sidebar {
+  z-index: 1000;
+}
+
+/* ====== Main Content ====== */
+.main-content {
+  margin-left: 280px; /* tetap ada untuk sidebar */
+  background-color: #fdf7ef;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  padding: 0; /* hilangkan padding putih di pinggir */
+}
+
+/* ====== Topbar ====== */
+.topbar {
+  background: linear-gradient(90deg, #3a241d, #5c3b2e);
+  color: #fcefdc;
+  padding: 16px 30px; /* bisa sedikit dikurangi kalau mau lebih rapat */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  border-bottom: 2px solid #8b5e3b;
+  margin: 0; /* pastikan tidak ada jarak atas */
+}
+
+/* ====== Main Grid Area ====== */
+main {
+  padding: 20px 30px; /* ubah sesuai kebutuhan, bisa juga 0 kalau mau full */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* Judul */
+.topbar h1 {
+  font-size: 1.7em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #f7e1bc;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Informasi user */
+.topbar .user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: background 0.3s ease;
+}
+
+.topbar .user-info:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.topbar .user-info span {
+  font-weight: 500;
+  color: #fcefdc;
+  font-size: 0.95em;
+}
+
+/* Foto profil user */
+.topbar .user-info img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #fcefdc;
+}
+
+
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  color: #54372b;
+  cursor: pointer;
+}
+
+/* ====== Dashboard Grid ====== */
+main {
+  padding: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* ====== Cards ====== */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* ====== Stats Overview ====== */
+.stats-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  grid-column: 1 / -1;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat h3 {
+  font-weight: 600;
+  color: #221518;
+}
+
+.stat p {
+  font-size: 1.9em;
+  font-weight: bold;
+  color: #54372b;
+}
+
+/* ====== Section Header ====== */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.section-header h3 {
+  color: #54372b;
+  margin: 0;
+}
+
+.section-header .subtitle {
+  font-size: 0.85em;
+  color: #7a6a5d;
+}
+
+/* ====== Orders Table ====== */
+.orders table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.orders th, .orders td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.orders th {
+  background-color: #54372b;
+  color: white;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.status.done {
+  background-color: #3cb371;
+  color: white;
+}
+
+.status.pending {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+/* ====== Sentiment Section ====== */
+.sentiment-stats {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 0.9em;
+  color: #221518;
+}
+
+.bar {
+  display: flex;
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pos { background: #3cb371; width: 75%; }
+.neu { background: #f0ad4e; width: 20%; }
+.neg { background: #dc3545; width: 5%; }
+
+/* ====== Recommendations ====== */
+.recommendations ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recommendations li {
+  background: #f7e1bc;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #221518;
+}
+
+/* ====== Overlay (mode gelap saat sidebar terbuka) ====== */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 900;
+  backdrop-filter: blur(2px);
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 992px) {
+  .menu-btn {
+    display: block;
+    font-size: 1.8em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #54372b;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .close-btn {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    color: #f7e1bc;
+    cursor: pointer;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .stats-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
